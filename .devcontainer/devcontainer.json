@@ -1,7 +1,7 @@
 {
   "name": "topic-review-devcontainer",
   "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
-  "workspaceFolder": "/workspaces",
+  "workspaceFolder": "/workspaces/topic-review",
   "remoteUser": "vscode",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -23,7 +23,7 @@
           "frontend"
         ],
         // Python / Ruff
-        "python.defaultInterpreterPath": "/workspaces/topic-review/.venv/bin/python",
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
         "python.testing.pytestEnabled": true,
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff",
@@ -55,6 +55,12 @@
           "editor.defaultFormatter": "denoland.vscode-deno"
         },
         "[typescript]": {
+          "editor.defaultFormatter": "denoland.vscode-deno"
+        },
+        "[javascriptreact]": {
+          "editor.defaultFormatter": "denoland.vscode-deno"
+        },
+        "[typescriptreact]": {
           "editor.defaultFormatter": "denoland.vscode-deno"
         },
         "[markdown]": {
@@ -157,15 +163,26 @@
         "i18n-ally.displayLanguage": "ja"
       },
       "extensions": [
+        // コア言語・ツールサポート
         "denoland.vscode-deno",
         "ms-python.python",
-        "charliermarsh.ruff",
         "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
         "bradlc.vscode-tailwindcss",
         // 個人設定の連動拡張機能
+        "mikestead.dotenv",
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-rename-tag",
+        "oderwat.indent-rainbow",
+        "yoavbls.pretty-ts-errors",
+        "yzhang.markdown-all-in-one",
         "DavidAnson.vscode-markdownlint",
         "coenraads.better-todo-tree",
-        "aaron-bond.better-comments"
+        "aaron-bond.better-comments",
+        // Git関連
+        "donjayamanne.git-extension-pack",
+        "mhutchie.git-graph",
+        "github.vscode-github-actions"
       ]
     }
   },
