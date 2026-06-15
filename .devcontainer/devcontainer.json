@@ -1,0 +1,209 @@
+{
+  "name": "topic-review-devcontainer",
+  // Dockerfileを使わず、公式のPython開発コンテナイメージを直接ベースに指定
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  // コンテナ起動後にワークスペースを開く
+  "workspaceFolder": "/workspaces",
+  // コンテナ内のユーザー（デフォルトの vscode ユーザーを使用）
+  "remoteUser": "vscode",
+  // [最適化] すべてのツール・シェルを最適な Features で一括インストール
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": false
+    },
+    // 1. Denoランタイム（コミュニティ提供の最新版）
+    "ghcr.io/devcontainers-community/features/deno:1": {
+      "version": "latest"
+    },
+    // 2. 高速パッケージマネージャー uv の自動インストール
+    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
+    // 3. 開発用シェルとしてモダンな fish を自動インストール
+    "ghcr.io/meaningful-ooo/devcontainer-features/fish:2": {}
+  },
+  // VS Codeの機能・設定のパーソナライズ
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Deno設定: モノレポ競合を防ぐため、コンテナ内でもフロントエンド配下でのみ有効化
+        "deno.enable": [
+          "frontend"
+        ],
+        "deno.lint": true,
+        "deno.unstable": true,
+        "deno.enablePaths": [
+          "frontend"
+        ],
+        // Python / Ruffの設定
+        "python.defaultInterpreterPath": "/workspaces/.venv/bin/python",
+        "python.testing.pytestEnabled": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        // --- ターミナル & エディタ統合設定 ---
+        "terminal.integrated.agentHostProfile.linux": "",
+        "terminal.integrated.profiles.linux": {
+          "fish": {
+            "path": "fish"
+          },
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          },
+          "zsh": {
+            "path": "zsh"
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "fish",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+        "files.insertFinalNewline": true,
+        // フォーマッタマッピング
+        "[javascript]": {
+          "editor.defaultFormatter": "denoland.vscode-deno"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "denoland.vscode-deno"
+        },
+        "[markdown]": {
+          "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+        },
+        // Markdown Linter設定
+        "markdownlint.config": {
+          "MD022": false,
+          "MD028": false,
+          "MD031": false,
+          "MD032": false,
+          "MD041": false
+        },
+        "git.autofetch": true,
+        // Better Todo Tree設定
+        "better-todo-tree.general.tags": [
+          "WARNING",
+          "BUG",
+          "HACK",
+          "FIXME",
+          "TODO",
+          "REVIEW",
+          "NOTE",
+          "[ ]",
+          "[x]"
+        ],
+        "better-todo-tree.highlights.customHighlight": {
+          "WARNING": {
+            "icon": "alert",
+            "foreground": "#B45460"
+          },
+          "BUG": {
+            "foreground": "#F0566E"
+          },
+          "HACK": {
+            "foreground": "#B455A0"
+          },
+          "FIXME": {
+            "foreground": "#FCAF17"
+          },
+          "TODO": {
+            "foreground": "#00B379"
+          },
+          "REVIEW": {
+            "icon": "code-review",
+            "foreground": "#21A0DB"
+          },
+          "NOTE": {
+            "icon": "pencil",
+            "foreground": "#A4D5BD"
+          }
+        },
+        "better-todo-tree.highlights.backgroundColourScheme": [
+          "red",
+          "orange",
+          "yellow",
+          "green",
+          "blue",
+          "indigo",
+          "violet"
+        ],
+        "better-todo-tree.regex.regex": "(// |# |<!-- |; |/\\* |^[ \\t]*(- |\\d+\\. ))\\s*($TAGS):",
+        // Better Comments設定
+        "better-comments.tags": [
+          {
+            "tag": "WARNING",
+            "strikethrough": false,
+            "backgroundColor": "transparent",
+            "color": "#B45460"
+          },
+          {
+            "tag": "BUG",
+            "strikethrough": false,
+            "backgroundColor": "transparent",
+            "color": "#F0566E"
+          },
+          {
+            "tag": "HACK",
+            "strikethrough": false,
+            "backgroundColor": "transparent",
+            "color": "#B455A0"
+          },
+          {
+            "tag": "FIXME",
+            "strikethrough": false,
+            "backgroundColor": "transparent",
+            "color": "#A3A649"
+          },
+          {
+            "tag": "TODO",
+            "strikethrough": false,
+            "backgroundColor": "transparent",
+            "color": "#00B379"
+          },
+          {
+            "tag": "REVIEW",
+            "strikethrough": false,
+            "backgroundColor": "transparent",
+            "color": "#21A0DB"
+          },
+          {
+            "tag": "NOTE",
+            "strikethrough": false,
+            "backgroundColor": "transparent",
+            "color": "#A4D5BD"
+          }
+        ],
+        "i18n-ally.displayLanguage": "ja"
+      },
+      "extensions": [
+        "denoland.vscode-deno", // Deno公式サポート
+        "ms-python.python", // Python公式サポート
+        "charliermarsh.ruff", // Linter/Formatter
+        "ms-python.vscode-pylance",
+        "bradlc.vscode-tailwindcss", // Tailwind CSS補完
+        // 個人設定の連動拡張機能
+        "DavidAnson.vscode-markdownlint",
+        "coenraads.better-todo-tree",
+        "aaron-bond.better-comments"
+      ]
+    }
+  },
+  // コンテナからローカルPCに転送するポート（フロントエンドとバックエンド）
+  "forwardPorts": [
+    5173,
+    8000
+  ],
+  // ポートラベルの定義
+  "portsAttributes": {
+    "5173": {
+      "label": "Frontend (Vite + Deno)",
+      "onAutoForward": "notify"
+    },
+    "8000": {
+      "label": "Backend (FastAPI)",
+      "onAutoForward": "notify"
+    }
+  },
+  // コンテナ作成完了後に自動実行するコマンド（初期依存関係の解決など）
+  "postCreateCommand": "test -f pyproject.toml && uv sync || true"
+}

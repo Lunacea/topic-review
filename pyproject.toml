@@ -1,0 +1,9 @@
+[project]
+name = "topic-review"
+version = "0.1.0"
+description = "Topic-based hierarchical review system"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv]
+workspace = { members = ["backend", "ai_modules"] }
