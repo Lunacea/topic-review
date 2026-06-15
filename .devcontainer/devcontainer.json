@@ -23,7 +23,7 @@
           "frontend"
         ],
         // Python / Ruff
-        "python.defaultInterpreterPath": "/workspaces/.venv/bin/python",
+        "python.defaultInterpreterPath": "/workspaces/topic-review/.venv/bin/python",
         "python.testing.pytestEnabled": true,
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff",
