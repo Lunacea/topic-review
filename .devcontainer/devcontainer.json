@@ -1,39 +1,28 @@
 {
   "name": "topic-review-devcontainer",
-  // Dockerfileを使わず、公式のPython開発コンテナイメージを直接ベースに指定
   "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
-  // コンテナ起動後にワークスペースを開く
   "workspaceFolder": "/workspaces",
-  // コンテナ内のユーザー（デフォルトの vscode ユーザーを使用）
   "remoteUser": "vscode",
-  // [最適化] すべてのツール・シェルを最適な Features で一括インストール
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "configureZshAsDefaultShell": false
     },
-    // 1. Denoランタイム（コミュニティ提供の最新版）
     "ghcr.io/devcontainers-community/features/deno:1": {
       "version": "latest"
     },
-    // 2. 高速パッケージマネージャー uv の自動インストール
     "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
-    // 3. 開発用シェルとしてモダンな fish を自動インストール
     "ghcr.io/meaningful-ooo/devcontainer-features/fish:2": {}
   },
-  // VS Codeの機能・設定のパーソナライズ
+  // VS Codeの機能・設定
   "customizations": {
     "vscode": {
       "settings": {
-        // Deno設定: モノレポ競合を防ぐため、コンテナ内でもフロントエンド配下でのみ有効化
-        "deno.enable": [
-          "frontend"
-        ],
+        // Deno
         "deno.lint": true,
-        "deno.unstable": true,
         "deno.enablePaths": [
           "frontend"
         ],
-        // Python / Ruffの設定
+        // Python / Ruff
         "python.defaultInterpreterPath": "/workspaces/.venv/bin/python",
         "python.testing.pytestEnabled": true,
         "[python]": {
@@ -43,7 +32,7 @@
             "source.organizeImports": "explicit"
           }
         },
-        // --- ターミナル & エディタ統合設定 ---
+        // --- ターミナル & エディタ ---
         "terminal.integrated.agentHostProfile.linux": "",
         "terminal.integrated.profiles.linux": {
           "fish": {
@@ -71,7 +60,7 @@
         "[markdown]": {
           "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
         },
-        // Markdown Linter設定
+        // Markdown Linter
         "markdownlint.config": {
           "MD022": false,
           "MD028": false,
@@ -80,7 +69,7 @@
           "MD041": false
         },
         "git.autofetch": true,
-        // Better Todo Tree設定
+        // Better Todo Tree
         "better-todo-tree.general.tags": [
           "WARNING",
           "BUG",
@@ -128,7 +117,7 @@
           "violet"
         ],
         "better-todo-tree.regex.regex": "(// |# |<!-- |; |/\\* |^[ \\t]*(- |\\d+\\. ))\\s*($TAGS):",
-        // Better Comments設定
+        // Better Comments
         "better-comments.tags": [
           {
             "tag": "WARNING",
@@ -176,11 +165,11 @@
         "i18n-ally.displayLanguage": "ja"
       },
       "extensions": [
-        "denoland.vscode-deno", // Deno公式サポート
-        "ms-python.python", // Python公式サポート
-        "charliermarsh.ruff", // Linter/Formatter
+        "denoland.vscode-deno",
+        "ms-python.python",
+        "charliermarsh.ruff",
         "ms-python.vscode-pylance",
-        "bradlc.vscode-tailwindcss", // Tailwind CSS補完
+        "bradlc.vscode-tailwindcss",
         // 個人設定の連動拡張機能
         "DavidAnson.vscode-markdownlint",
         "coenraads.better-todo-tree",
@@ -188,12 +177,12 @@
       ]
     }
   },
-  // コンテナからローカルPCに転送するポート（フロントエンドとバックエンド）
+  // コンテナからローカルPCに転送するポート
   "forwardPorts": [
-    5173,
-    8000
+    5173, // フロントエンド（Viteのデフォルトポート）
+    8000 // バックエンド（FastAPIのデフォルトポート）
   ],
-  // ポートラベルの定義
+  // ポートラベル
   "portsAttributes": {
     "5173": {
       "label": "Frontend (Vite + Deno)",
@@ -204,6 +193,6 @@
       "onAutoForward": "notify"
     }
   },
-  // コンテナ作成完了後に自動実行するコマンド（初期依存関係の解決など）
+  // コンテナ作成後: uv syncで依存関係をインストール
   "postCreateCommand": "test -f pyproject.toml && uv sync || true"
 }
